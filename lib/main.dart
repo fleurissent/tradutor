@@ -108,10 +108,7 @@ class _TelaTradutorState extends State<TelaTradutor> {
             ),
             Text(
               palavra.portugues,
-              style: const TextStyle(
-                fontSize: 42,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
             if (mostrarTraducao) ...[

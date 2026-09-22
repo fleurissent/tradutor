@@ -7,8 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tradutor/main.dart';
 
 void main() {
-  testWidgets('Exibe a primeira palavra em portugues ao iniciar',
-      (WidgetTester tester) async {
+  testWidgets('Exibe a primeira palavra em portugues ao iniciar', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const TradutorApp());
 
     expect(find.text('Português'), findsOneWidget);
@@ -17,8 +18,9 @@ void main() {
     expect(find.text('House'), findsNothing);
   });
 
-  testWidgets('Mostra a traducao ao tocar em "Mostrar tradução"',
-      (WidgetTester tester) async {
+  testWidgets('Mostra a traducao ao tocar em "Mostrar tradução"', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const TradutorApp());
 
     await tester.tap(find.text('Mostrar tradução'));
@@ -28,8 +30,9 @@ void main() {
     expect(find.text('Casa'), findsWidgets); // portugues + espanhol
   });
 
-  testWidgets('Navega para a proxima palavra e reinicia a traducao',
-      (WidgetTester tester) async {
+  testWidgets('Navega para a proxima palavra e reinicia a traducao', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const TradutorApp());
 
     await tester.tap(find.text('Próxima'));
@@ -40,14 +43,16 @@ void main() {
     expect(find.text('Dog'), findsNothing);
   });
 
-  testWidgets('Lista circular: "Anterior" na primeira palavra vai para a ultima',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(const TradutorApp());
+  testWidgets(
+    'Lista circular: "Anterior" na primeira palavra vai para a ultima',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(const TradutorApp());
 
-    await tester.tap(find.text('Anterior'));
-    await tester.pump();
+      await tester.tap(find.text('Anterior'));
+      await tester.pump();
 
-    // Ultima palavra da lista.
-    expect(find.text('Trabalho'), findsOneWidget);
-  });
+      // Ultima palavra da lista.
+      expect(find.text('Trabalho'), findsOneWidget);
+    },
+  );
 }
