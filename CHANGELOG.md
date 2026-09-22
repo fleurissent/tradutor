@@ -17,4 +17,4 @@ projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
   estática, testes com cobertura e build do APK.
 - Documentação: README, ADR inicial e este CHANGELOG.
 
-[1.0.0]: https://github.com/FelipeSilveira/tradutor/releases/tag/v1.0.0
+[1.0.0]: https://github.com/fleurissent/tradutor/releases/tag/v1.0.0
