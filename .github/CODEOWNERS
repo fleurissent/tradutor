@@ -1,0 +1,8 @@
+# Revisores automaticos por area (PGC 2 e 5.2).
+# Mudancas no pipeline e nas dependencias sao de maior risco:
+# o Desenvolvedor Lider (eu) e sempre chamado para revisar.
+
+/.github/        @fleurissent
+/android/        @fleurissent
+pubspec.yaml     @fleurissent
+pubspec.lock     @fleurissent

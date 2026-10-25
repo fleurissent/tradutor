@@ -1,18 +1,23 @@
-## Descrição
+<!--
+Título do PR: siga Conventional Commits — ele vira a mensagem do commit na main
+e define a próxima versão. Ex.: feat(web): adiciona formulário de doação
+-->
 
-<!-- O que este PR faz e por quê. Vincule o item de trabalho, se houver. -->
+## Contexto
+<!-- Por que esta mudança é necessária? Qual Issue ela resolve? -->
 
-## Tipo de mudança
+## Decisão tomada
+<!-- O que foi feito e por quê. Alternativas descartadas, se houver. -->
 
-- [ ] feat — nova funcionalidade
-- [ ] fix — correção de bug
-- [ ] docs — documentação
-- [ ] test — testes
-- [ ] chore/ci — build, dependências ou pipeline
+## Como testar
+1.
+2.
 
-## Checklist (quality gate)
+## Checklist (PGC 5.2)
+- [ ] O PR é pequeno e trata de um único assunto
+- [ ] Há testes cobrindo o caso principal
+- [ ] Branch e título seguem a convenção (`feature/<issue>-<descricao>`, Conventional Commits)
+- [ ] Nenhum segredo, token ou senha no código (use GitHub Secrets)
+- [ ] Mudança de alto risco? (esquema de banco, dados pessoais/LGPD, hotfix) → marquei o CCM
 
-- [ ] `flutter analyze` sem erros
-- [ ] `flutter test` verde
-- [ ] Código formatado (`dart format`)
-- [ ] Revisado por outro colega ("quatro olhos")
+Closes #
