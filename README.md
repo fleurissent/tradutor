@@ -43,14 +43,29 @@ flutter test --coverage  # testes de widget + cobertura
 ```
 tradutor/
 ├── .github/workflows/   # pipelines de CI (build, lint, testes, APK)
+├── .github/ISSUE_TEMPLATE/  # modelos de Issue (funcionalidade, defeito)
+├── .github/CODEOWNERS   # revisores obrigatórios por área
 ├── android/             # projeto Android (manifests, gradle)
 ├── docs/adr/            # Architecture Decision Records
+├── docs/pgcs/           # Plano de Gerenciamento de Configuração (PGCS)
 ├── lib/                 # código-fonte da aplicação (main.dart)
 ├── test/                # testes automatizados de widget
 ├── analysis_options.yaml
 ├── pubspec.yaml         # dependências e versão (SemVer)
 └── pubspec.lock         # versões travadas das dependências
 ```
+
+## Plano de GCS
+
+O Plano de Gerenciamento de Configuração deste projeto está em
+[`docs/pgcs/PGCS_Tradutor_Felipe_Silveira.pdf`](docs/pgcs/PGCS_Tradutor_Felipe_Silveira.pdf)
+e também é versionado como item de configuração.
+
+## Fluxo de contribuição
+
+- A `main` é protegida: toda mudança entra por **Pull Request**, com 1 aprovação
+  do par de revisão e *squash merge* (título do PR em Conventional Commits).
+- Ambientes: `staging` (automático) e `production` (aprovação obrigatória).
 
 ## Versionamento
 
