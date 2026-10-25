@@ -1,0 +1,6 @@
+# Normaliza finais de linha (evita CRLF do Windows nos scripts do pipeline)
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jar binary
+*.pdf binary
