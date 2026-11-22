@@ -67,7 +67,6 @@ class _TelaTradutorState extends State<TelaTradutor> {
   }
 
   void proximaPalavra() {
-    final totalPalavras = palavras.length;
     setState(() {
       // lista circular: depois da ultima volta pra primeira
       indiceAtual = (indiceAtual + 1) % palavras.length;
