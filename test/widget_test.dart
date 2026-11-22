@@ -37,7 +37,7 @@ void main() {
     await tester.tap(find.text('Próxima'));
     await tester.pump();
 
-    expect(find.text('Livro'), findsOneWidget);
+    expect(find.text('Cachorro'), findsOneWidget);
     // Ao trocar de palavra, a traducao volta a ficar oculta.
     expect(find.text('Dog'), findsNothing);
   });
