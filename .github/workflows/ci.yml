@@ -1,50 +1,62 @@
 name: CI
 
 # Integracao Continua do app Tradutor de Palavras (Flutter).
-# Todo push e todo Pull Request para a branch principal dispara o pipeline.
-# Nenhuma mudanca deve ser integrada sem o pipeline verde (quality gate).
+# Baseado no modelo da Aula 2 (ci-node.yml da ONGConecta), trocando o
+# setup-node pelo subosito/flutter-action e os comandos pelos do Flutter.
+#
+# Na protecao da main ficam obrigatorios SOMENTE: ci-ok e titulo-pr
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  build:
-    name: Build, analise e testes
+  qualidade:
+    name: Lint, testes e build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout do codigo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Configurar Flutter (com cache)
         uses: subosito/flutter-action@v2
         with:
+          # versao fixa, igual a da maquina de desenvolvimento, pra o CI nao
+          # quebrar sozinho quando sai Flutter novo (o 3.50 deprecou o material.dart)
+          flutter-version: 3.47.2
           channel: stable
           cache: true
 
-      - name: Restaurar dependencias
+      - name: Instalar dependencias
         run: flutter pub get
 
       - name: Verificar formatacao
         run: dart format --output=none --set-exit-if-changed .
 
-      - name: Analise estatica (lint)
+      - name: Lint
         run: flutter analyze
 
-      - name: Testes unitarios / de widget (com cobertura)
+      - name: Testes com cobertura
         run: flutter test --coverage
 
-      - name: Publicar relatorio de cobertura
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: coverage/lcov.info
-          if-no-files-found: warn
+      - name: Quality gate de cobertura (PGC 5.3, minimo 60%)
+        # o flutter test nao tem opcao de limite, entao a conta e feita no lcov.info
+        run: |
+          COBERTURA=$(awk -F: '/^LF:/ {total+=$2} /^LH:/ {cobertas+=$2} END {printf "%d", cobertas*100/total}' coverage/lcov.info)
+          echo "Cobertura de linhas: $COBERTURA%"
+          if [ "$COBERTURA" -lt 60 ]; then
+            echo "::error::Cobertura abaixo de 60%."
+            exit 1
+          fi
 
-      - name: Build do APK (artefato versionado)
+      - name: Build do APK
         run: flutter build apk --release
 
       - name: Publicar APK como artefato
@@ -53,3 +65,32 @@ jobs:
           name: tradutor-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: warn
+
+  dependencias:
+    name: Analise de dependencias (SCA)
+    # Compara as dependencias do PR com a main e bloqueia vulnerabilidade critica (PGC 5.3).
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/dependency-review-action@v5
+        with:
+          fail-on-severity: critical
+
+  ci-ok:
+    name: ci-ok
+    if: always()
+    needs: [qualidade, dependencias]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Conferir resultado dos jobs
+        env:
+          RESULTADOS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Resultados: $RESULTADOS"
+          for r in $RESULTADOS; do
+            if [ "$r" = "failure" ] || [ "$r" = "cancelled" ]; then
+              echo "::error::Algum job do CI falhou, merge bloqueado (PGC 5.2)."
+              exit 1
+            fi
+          done
